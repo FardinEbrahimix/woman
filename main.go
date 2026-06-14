@@ -89,20 +89,20 @@ func ensureConfig() *Config {
 }
 
 func callGemini(apiKey, command string) (string, error) {
-	url := "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=" + apiKey
+	url := "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=" + apiKey
 
 	prompt := fmt.Sprintf(`
 Explain CLI command: %s
 
 Rules:
-- max 10 lines
+- short answers
 - no markdown
 - simple and clear
 - sections:
   What it is
   Usage
-  Flags (max 3)
-  Example (1 only)
+  Flags (only top 3)
+  Example (just 1)
 - use emojis for sections
 `, command)
 
@@ -147,18 +147,6 @@ Rules:
 	return geminiResp.Candidates[0].Content.Parts[0].Text, nil
 }
 
-func cleanOutput(s string) string {
-	replacer := strings.NewReplacer(
-		"#", "",
-		"##", "",
-		"###", "",
-		"*", "",
-		"`", "",
-	)
-
-	return strings.TrimSpace(replacer.Replace(s))
-}
-
 func main() {
 	if len(os.Args) < 2 {
 		fmt.Println("❌ Usage: woman <command>")
@@ -176,5 +164,5 @@ func main() {
 		return
 	}
 
-	fmt.Println(cleanOutput(result))
+	fmt.Println(strings.TrimSpace(result))
 }
