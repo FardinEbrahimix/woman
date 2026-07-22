@@ -89,7 +89,7 @@ func ensureConfig() *Config {
 }
 
 func callGemini(apiKey, command string) (string, error) {
-	url := "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=" + apiKey
+	url := "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=" + apiKey
 
 	prompt := fmt.Sprintf(`
 Explain CLI command: %s
